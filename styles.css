@@ -457,6 +457,19 @@ a, button, [role="button"] {
   border-radius: 50%;
 }
 
+.card-avatar-initials {
+  background: var(--cream);
+  font-size: 32px;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 600;
+  color: var(--sage);
+}
+
+.team-card[data-accent="sage"] .card-avatar-initials { color: var(--sage); border: 2px solid rgba(139,158,124,0.27); }
+.team-card[data-accent="sage-dark"] .card-avatar-initials { color: var(--sage-dark); border: 2px solid rgba(107,127,94,0.27); }
+.team-card[data-accent="brown"] .card-avatar-initials { color: var(--brown); border: 2px solid rgba(122,107,85,0.27); }
+.team-card[data-accent="brown-light"] .card-avatar-initials { color: var(--brown-light); border: 2px solid rgba(168,152,128,0.27); }
+
 .team-card[data-accent="sage"] .card-avatar { border: 2px solid rgba(139, 158, 124, 0.27); color: var(--sage); }
 .team-card[data-accent="brown"] .card-avatar { border: 2px solid rgba(122, 107, 85, 0.27); color: var(--brown); }
 .team-card[data-accent="sage-dark"] .card-avatar { border: 2px solid rgba(107, 127, 94, 0.27); color: var(--sage-dark); }
