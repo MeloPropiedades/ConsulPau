@@ -180,19 +180,71 @@
   </footer>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      // ── Navbar scroll ──
       var navbar = document.getElementById('navbar');
       window.addEventListener('scroll', function() { navbar.classList.toggle('scrolled', window.scrollY > 40); });
+
+      // ── Mobile menu ──
       var hamburger = document.getElementById('hamburger');
       var mobileMenu = document.getElementById('mobileMenu');
       hamburger.addEventListener('click', function() { hamburger.classList.toggle('active'); mobileMenu.classList.toggle('active'); });
       mobileMenu.querySelectorAll('a').forEach(function(l) { l.addEventListener('click', function() { hamburger.classList.remove('active'); mobileMenu.classList.remove('active'); }); });
-      var slides = [{ text:'Un espacio cálido y seguro donde cada niño es protagonista de su propio desarrollo.',color:'#8B9E7C'},{text:'Consultorios diseñados para que los más pequeños se sientan como en casa.',color:'#7A6B55'},{text:'Profesionales comprometidas con el bienestar integral de tu hijo.',color:'#6B7F5E'},{text:'Acompañamos a las familias en cada etapa del crecimiento.',color:'#A89880'}];
-      var carousel=document.getElementById('carousel'),carouselText=document.getElementById('carouselText'),dotsContainer=document.getElementById('carouselDots'),current=0,interval;
-      slides.forEach(function(_,i){var dot=document.createElement('button');dot.className='carousel-dot'+(i===0?' active':'');dot.setAttribute('aria-label','Slide '+(i+1));dot.addEventListener('click',function(){goTo(i);});dotsContainer.appendChild(dot);});
-      function updateSlide(){carousel.style.background=slides[current].color;carouselText.textContent='\u201C'+slides[current].text+'\u201D';dotsContainer.querySelectorAll('.carousel-dot').forEach(function(d,i){d.classList.toggle('active',i===current);});}
-      function goTo(i){current=i;updateSlide();resetInterval();}function next(){current=(current+1)%slides.length;updateSlide();}function prev(){current=(current-1+slides.length)%slides.length;updateSlide();}function resetInterval(){clearInterval(interval);interval=setInterval(next,5000);}
-      document.getElementById('carouselPrev').addEventListener('click',function(){prev();resetInterval();});document.getElementById('carouselNext').addEventListener('click',function(){next();resetInterval();});
-      updateSlide();interval=setInterval(next,5000);
+
+      // ── Carousel ──
+      var CAPTIONS = [
+        'Un espacio cálido y seguro donde cada niño es protagonista de su propio desarrollo.',
+        'Consultorios diseñados para que los más pequeños se sientan como en casa.',
+        'Acompañamos a las familias en cada etapa del crecimiento.'
+      ];
+      var slides   = document.querySelectorAll('.carousel-slide');
+      var caption  = document.getElementById('carouselCaption');
+      var dotsWrap = document.getElementById('carouselDots');
+      var btnPrev  = document.getElementById('carouselPrev');
+      var btnNext  = document.getElementById('carouselNext');
+      var total    = slides.length;
+      var current  = 0;
+      var timer    = null;
+
+      // Build dots
+      for (var d = 0; d < total; d++) {
+        var dot = document.createElement('button');
+        dot.className = 'carousel-dot' + (d === 0 ? ' active' : '');
+        dot.setAttribute('aria-label', 'Slide ' + (d + 1));
+        (function(idx) {
+          dot.addEventListener('click', function() { goTo(idx); resetTimer(); });
+        })(d);
+        dotsWrap.appendChild(dot);
+      }
+
+      function goTo(idx) {
+        slides[current].classList.remove('active');
+        dotsWrap.children[current].classList.remove('active');
+        current = ((idx % total) + total) % total;
+        slides[current].classList.add('active');
+        dotsWrap.children[current].classList.add('active');
+        caption.textContent = '\u201C' + CAPTIONS[current] + '\u201D';
+      }
+
+      function resetTimer() {
+        clearInterval(timer);
+        timer = setInterval(function() { goTo(current + 1); }, 5000);
+      }
+
+      btnPrev.addEventListener('click', function() { goTo(current - 1); resetTimer(); });
+      btnNext.addEventListener('click', function() { goTo(current + 1); resetTimer(); });
+
+      // Swipe support for mobile
+      var touchStartX = 0;
+      var carouselEl = document.getElementById('carousel');
+      carouselEl.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; }, { passive: true });
+      carouselEl.addEventListener('touchend', function(e) {
+        var diff = touchStartX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 40) { goTo(diff > 0 ? current + 1 : current - 1); resetTimer(); }
+      }, { passive: true });
+
+      // Init
+      goTo(0);
+      resetTimer();
     });
   </script>
 </body>
