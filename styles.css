@@ -515,6 +515,51 @@ a, button, [role="button"] {
   margin-bottom: 18px;
 }
 
+/* ─── Workshop Card ─── */
+.workshop-avatar {
+  background: var(--cream) !important;
+}
+
+.workshop-avatar img {
+  object-fit: contain !important;
+  padding: 4px;
+}
+
+.workshop-desc {
+  font-size: 12px !important;
+  margin-bottom: 14px !important;
+  font-style: italic;
+}
+
+.workshop-team {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0 -4px 18px;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(139, 158, 124, 0.06);
+}
+
+.workshop-member {
+  display: flex;
+  flex-direction: column;
+  font-family: 'Nunito', sans-serif;
+  line-height: 1.3;
+}
+
+.workshop-member strong {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.workshop-member span {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
 .card-whatsapp {
   display: inline-flex;
   align-items: center;
